@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20141211223432) do
   add_index "notes", ["user_id"], name: "index_user_id", using: :btree
 
   create_table "users", force: true do |t|
+    t.string   "username"
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
