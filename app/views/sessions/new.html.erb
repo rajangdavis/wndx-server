@@ -10,11 +10,11 @@
     <%= label_tag :password %><br />
     <%= password_field_tag :password %>
   </div>
-  <div class="actions"><%= submit_tag "Log In", :id => "login"%></div>
+  <div class="actions"><a href="#" id="wndx-login">Log In</a></div>
 <% end %>
 <script type="text/javascript">
 $(document).ready(function() {
-	$(document).on('click','input#login', function() {
+	$(document).on('click','input#wndx-login', function() {
       
 						console.log('hello?');
 	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
