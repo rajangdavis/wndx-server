@@ -13,8 +13,9 @@
   <div class="actions"><%= submit_tag "Log In", :id => "login"%></div>
 <% end %>
 <script type="text/javascript">
-	$('input#login').click(function(e) {
-      e.preventDefault();
+$(document).ready(function() {
+	$(document).on('click','input#login', function() {
+      
 						console.log('hello?');
 	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
 	$.ajaxSetup({
@@ -38,6 +39,7 @@
       });
 
   return false;
-});		
+});	
+}); 	
 </script>
 </div>
