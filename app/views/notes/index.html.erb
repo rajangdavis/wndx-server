@@ -9,11 +9,41 @@
 
 <% if current_user %>
 
-  <%= form_tag notes_path, remote: true do %>
+
     <%= text_field_tag :description %>
     <%= hidden_field_tag :domain %>
     <%= hidden_field_tag :user_id, current_user.id %>
-    <%= submit_tag "submit" %>
-  <% end %>
+ 
+<div class="actions"><a href="#" id="wndx-addnote">Add note</a></div>
 
 <% end %>
+
+<script type="text/javascript">
+
+	$(document).on('click','#wndx-addnote', function() {
+      
+						console.log('hello?');
+	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
+	$.ajaxSetup({
+  		beforeSend: function(xhr) {
+    	xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+  		}
+		}); 
+
+  $.ajax({
+      type: "POST", 
+      url: "/notes?&authenticity_token="+encodeURIComponent(AUTH_TOKEN), 
+      data:{ utf:"✓", description : $('#description').val() , domain : $('#domain').val(), user_id : $('#user_id').val(),commit: "submit" },
+      dataType: "HTML",
+      success:function(data) {
+            console.log(data);
+            // window.location = data.redirect_url;
+        },
+        error: function(xhr, status) {
+            console.log(status);
+        }
+      });
+
+  return false;
+});	
+</script>

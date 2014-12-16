@@ -1,7 +1,7 @@
 <h1>Log In</h1>
 
 <div class="login-info">
-<%= form_tag login_path, remote: true do %>
+
   <div class="field">
     <%= label_tag :username %><br />
     <%= text_field_tag :username %>
@@ -11,9 +11,9 @@
     <%= password_field_tag :password %>
   </div>
   <div class="actions"><a href="#" id="wndx-login">Log In</a></div>
-<% end %>
+
 <script type="text/javascript">
-$(document).ready(function() {
+
 	$(document).on('click','#wndx-login', function() {
       
 						console.log('hello?');
@@ -28,7 +28,7 @@ $(document).ready(function() {
       type: "POST", 
       url: "/login?&authenticity_token="+encodeURIComponent(AUTH_TOKEN), 
       data:{ username : $('#username').val() , password : $('#password').val() },
-      dataType: "JSON",
+      dataType: "HTML",
       success:function(data) {
             console.log(data);
             // window.location = data.redirect_url;
@@ -40,6 +40,5 @@ $(document).ready(function() {
 
   return false;
 });	
-}); 	
 </script>
 </div>
