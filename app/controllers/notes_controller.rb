@@ -1,13 +1,27 @@
 class NotesController < ApplicationController
 
-  def index
-
+    def index
     if params[:domain]
-      @notes = Note.where(domain: params[:domain])
+      @notes = Note.find_by_sql([
+      'SELECT notes.id, notes.user_id, notes.description, notes.domain, notes.created_at, users.username ' +
+      'FROM notes ' +
+      'INNER JOIN users ' +
+      'ON notes.user_id = users.id '+
+      'WHERE notes.domain = ?',
+      "#{params[:domain]}"
+      ])
     else
-      @notes = Note.all
+      @notes = Note.find_by_sql([
+      'SELECT notes.id, notes.user_id, notes.description, notes.domain, notes.created_at, users.username ' +
+      'FROM notes ' +
+      'INNER JOIN users ' +
+      'ON notes.user_id = users.id '
+      ])
     end
     
+
+
+
     respond_to do |format|
       format.html {  }
       format.json { render json: @notes, status: :ok }
@@ -15,19 +29,18 @@ class NotesController < ApplicationController
 
   end
 
+  def show
+    @note = Note.find(params[:id])
+  end
+
   def create
-    @note = Note.new(note_params)
+    note = Note.new(note_params)
 
-    respond_to do |format|
-      if @note.save
-        format.html {  }
-        format.json { render json: @note, status: :created }
+      if note.save
+        redirect_to notes_path
       else
-        format.html {  }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
       end
-    end
-
+  
   end
 
   def destroy
