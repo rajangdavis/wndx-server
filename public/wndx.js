@@ -32,8 +32,7 @@
 //   }
 //   return out;
 // }
-$(document).ready(function(){
-  $('wndx-sidebar input#login').click(function() {
+$(document).on("click",'wndx-sidebar input#login',function() {
               console.log('hello?');
     var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $.ajaxSetup({
@@ -52,4 +51,4 @@ $(document).ready(function(){
 
     return false;
   }); 
-});
+
