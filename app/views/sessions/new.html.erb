@@ -12,4 +12,20 @@
   </div>
   <div class="actions"><%= submit_tag "Log In", :id => "login"%></div>
 <% end %>
+<script type="text/javascript">
+	$('input#login').click(function() {
+						console.log('hello?');
+			            // $.ajax({
+			            //     type: 'POST',
+			            //     url: '//wndx-test.herokuapp.com/login',
+			            //     data: { username : $('input#username').val() , password_digest : $('input#password').val() }
+			            // }).done(function(data) {
+			            //     if (data == 'logged in') {
+			            //         console.log('sup breh');
+			            //     } else {
+			            //         console.log(data);
+			            //     }
+			            // });
+        			});
+</script>
 </div>
