@@ -15,17 +15,22 @@
 <script type="text/javascript">
 	$('input#login').click(function() {
 						console.log('hello?');
-			            // $.ajax({
-			            //     type: 'POST',
-			            //     url: '//wndx-test.herokuapp.com/login',
-			            //     data: { username : $('input#username').val() , password_digest : $('input#password').val() }
-			            // }).done(function(data) {
-			            //     if (data == 'logged in') {
-			            //         console.log('sup breh');
-			            //     } else {
-			            //         console.log(data);
-			            //     }
-			            // });
-        			});
+	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
+	$.ajaxSetup({
+  		beforeSend: function(xhr) {
+    	xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+  		}
+		}); 
+
+  $.ajax({
+      type: "POST", 
+      url: "/login?&authenticity_token="+encodeURIComponent(AUTH_TOKEN), 
+      data:{ username : $('#username').val() , password : $('#password').val() },
+      dataType: "JSON"
+      //success:window.location.replace("/")
+      });
+
+  return false;
+});		
 </script>
 </div>
