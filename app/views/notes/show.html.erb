@@ -7,7 +7,7 @@
 
 <% if current_user %>
 
-  <%= form_tag comments_path do %>
+  <%= form_tag comments_path, remote: true do %>
     <%= text_field_tag :description%>
     <%= hidden_field_tag :user_id, current_user.id %>
     <%= hidden_field_tag :note_id, @note.id %>
