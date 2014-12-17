@@ -9,30 +9,32 @@
 <div class="actions"><span id="wndx-createaccount">Create Account</span></div>
 
 <script type="text/javascript">
+  $(document).ready(function(){
 
-	$(document).on('click','#wndx-createaccount', function() {
-						console.log('hello?');
-	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
-	$.ajaxSetup({
-  		beforeSend: function(xhr) {
-    	xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-  		}
-		}); 
+  	$(document).on('click','#wndx-createaccount', function() {
+  						console.log('hello?');
+  	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  	$.ajaxSetup({
+    		beforeSend: function(xhr) {
+      	xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+    		}
+  		}); 
 
-  $.ajax({
-      type: "POST", 
-      url: "/signup?&authenticity_token="+encodeURIComponent(AUTH_TOKEN), 
-      data:{ utf:"✓", username : $('#username').val() , password : $('#password').val(), password_confirmation : $('#password_confirmation').val(),commit: "submit" },
-      dataType: "HTML",
-      success:function(data) {
-            console.log(data);
-            // window.location = data.redirect_url;
-        },
-        error: function(xhr, status) {
-            console.log(status);
-        }
-      });
+    $.ajax({
+        type: "POST", 
+        url: "/signup?&authenticity_token="+encodeURIComponent(AUTH_TOKEN), 
+        data:{ utf:"✓", username : $('#username').val() , password : $('#password').val(), password_confirmation : $('#password_confirmation').val(),commit: "submit" },
+        dataType: "HTML",
+        success:function(data) {
+              console.log(data);
+              // window.location = data.redirect_url;
+          },
+          error: function(xhr, status) {
+              console.log(status);
+          }
+        });
 
-  return false;
-});	
+    return false;
+  });	
+});
 </script>
