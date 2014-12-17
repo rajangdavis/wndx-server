@@ -3,7 +3,7 @@ $( document ).ready(function() {
   $('#add-post-container').toggle();
 
   $(document).on('click', '#hide-button', function() {
-    $('#wndx-sidebar').css("right", "-400px");
+    $('#wndx-sidebar').css("right", "-410px");
     $('#show-button').css("right", "-20px");
     $('.commentCC').css("right", "-380px");
     $('.userCC').css("right", "-380px");
