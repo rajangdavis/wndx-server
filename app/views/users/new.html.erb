@@ -6,12 +6,11 @@
 <%= password_field_tag :password %> <br>
 <%= password_field_tag :password_confirmation %> <br>
 
-<div class="actions"><a href="#" id="wndx-createaccount">Create Account</a></div>
+<div class="actions"><span id="wndx-createaccount">Create Account</span></div>
 
 <script type="text/javascript">
 
 	$(document).on('click','#wndx-createaccount', function() {
-      
 						console.log('hello?');
 	var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
 	$.ajaxSetup({
