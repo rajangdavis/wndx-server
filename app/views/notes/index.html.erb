@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  $(document).on('click','#wndx-addnote', function() {
+  $('#wndx-addnote').click(function() {
       
             console.log('hello?');
   var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
