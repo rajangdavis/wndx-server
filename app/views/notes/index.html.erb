@@ -1,50 +1,186 @@
-<br>
-<% @notes.each do |note|%>
-	<span><%= link_to "#{note.description}", note_path(note) %></span><br>
+  <!-- Show sidebar button -->
+  <div id="show-button"><div id="button-circle"></div></div>
+  <div id="wndx-sidebar">
 
-	<%=link_to "#{note.username}", user_path(note.user_id)%> | <%= note.created_at.strftime("%m/%d/%Y")%> | 
-	<%=link_to note.comments.count, note_path(note) %><br><br>
+    <!-- Sidebar top nav bar -->
+    <div id="top-bar">
+      <div id="hide-button"><i class="fa fa-arrow-right">&nbsp; HIDE</i></div>
 
-<% end %>
+      <div id='top-bar-buttons'>
+      <% if !current_user %>
+        <div id="login">LOGIN</div>
+        <div id="signup">SIGN UP</div>
+      <% else %>
+        <div id="logout">LOG OUT</div>
+      <% end %>
+      </div>
 
+    </div>
+
+    <div id="logo"></div>
+
+  <!-- add post stuff -->
 <% if current_user %>
 
+    <div id="addPost"><i class="fa fa-plus"></i></div>    
 
-    <%= text_field_tag :description %>
-    <%= hidden_field_tag :domain %>
-    <%= hidden_field_tag :user_id, current_user.id %>
- 
-<div class="actions"><a id="wndx-addnote">Add note</a></div>
+    <div id="add-post-container">
+      <textarea name="textarea" rows="10" cols="50" id="add-post-input" placeholder="Add your post here"></textarea>
+      <textarea id="domain" style="display:none;"></textarea>
+      <textarea id="user_id" style="display:none;" ><%=current_user.id%></textarea>
+      <div id="submitPost"><i class="fa fa-plus"></i></div>
+      <div id="closePost"><i class="fa fa-times"></i></div>
+    </div>
+
+<% end %>
+    
+  <!-- Big post container with userCC and commentCC inside -->
+    
+    <div id="postCC">
+
+  <!-- sessions panel -->
+
+    <div id="sessionCC">
+      <div id="hide-session-button"><i class="fa fa-arrow-right">&nbsp; CLOSE</i></div>
+
+      <div id="signupContainer">
+        <div id="signupHeader">Sign Up</div>
+        <input type="text" id="usernameSU" placeholder="Create username" class="usernameInput"><br>
+        <input type="password" id="passwordSU" placeholder="Create password" class="passwordInput">
+        <div id="signupSubmitButton"><span class='submit'>SUBMIT</span></div>
+      </div>
+
+      <div id="loginContainer">
+        <div id="loginHeader">Login</div>
+        <input type="text" id="username" placeholder="Username" class="usernameInput"><br>
+        <input type="password" id="password" placeholder="Password" class="passwordInput">
+        <div id="loginSubmitButton"><span class='submit'>SUBMIT</span></div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+<% @notes.each do |note|%>
+
+  <!-- Post panel stuff with dumb content -->
+
+      <div class="postContainer">
+        <div class="post">        
+          <span class="postBody"><%= note.description %></span>     
+          <div class="postMeta">
+            <span rel='<%="#{note.user_id}"%>' class="userName">@<%= note.username %></span>&nbsp;&nbsp; | &nbsp;&nbsp;<span class="date"><%= note.created_at.strftime("%m/%d/%Y")%>
+        </span> &nbsp;&nbsp;| &nbsp;&nbsp;<span rel='<%="#{note.id}"%>' class="commentsLink"><i class="fa fa-comment"></i>&nbsp;<%= note.comments.count %></span></div>   
+        </div>
+      </div>
+
+  <!-- User panel with dumb content -->
+
+      <div rel='<%="#{note.user_id}"%>' class='userCC'>
+        <div id="hide-user-button"><i class="fa fa-arrow-right">&nbsp; HIDE USER</i></div>
+        <div class="hide-user-vert-button"></div>
+        <div class='userHeader'><%= note.username %></div>
+
+        <% @userComments = Comment.where(user_id: note.user_id) %>
+        <% @userComments.each do |comment|%>
+
+        <div class='commentContainer'>
+          <span class="commentBody"><%= comment.description %></span>
+          <div class="postMeta">
+              <span class="userName">@<%= comment.user_id %></span>&nbsp;&nbsp; | &nbsp;&nbsp;<span class="date"><%= comment.created_at.strftime("%m/%d/%Y")%>
+          </span>
+          </div>
+        </div>
+
+        <% end %>
+
+      </div>
+
+ <!-- Comments panel -->
+
+      <div rel='<%="#{note.id}"%>' class='commentCC'>
+        
+        <div class="postContainer-in-comments">
+          <div class="post">        
+            <span class="postBody-in-comments"><%= note.description %></span>     
+            <div class="postMeta">
+              <span class="userName">@<%= note.username %></span>&nbsp;&nbsp; | &nbsp;&nbsp;<span class="date"><%= note.created_at.strftime("%m/%d/%Y")%>
+            </div>    
+          </div>
+        </div>
+
+        <div id="hide-comments-button"><i class="fa fa-arrow-right">&nbsp; HIDE COMMENTS</i></div>
+        <div class="hide-comments-vert-button"></div>
+        <div id='commentHeader'><%= note.comments.count %></div>
+
+  <!-- Repeated dumb comments -->
+
+    <% @postComments = Comment.where(note_id: note.id) %>    
+    <% @postComments.each do |comment|%>
+
+        <div class='commentContainer'>
+          <span class="commentBody"><%= comment.description %></span>
+          <div class="postMeta">
+              <span class="userName">@<%= comment.user_id %></span>&nbsp;&nbsp; | &nbsp;&nbsp;<span class="date"><%= comment.created_at.strftime("%m/%d/%Y")%>
+          </span>
+          </div>
+        </div>
+
+    <% end %>
+
+
+    </div>
 
 <% end %>
 
-<script type="text/javascript">
-$(document).ready(function(){
-  $('#wndx-addnote').click(function() {
+</div>
+
+
+
+
       
-            console.log('hello?');
-  var AUTH_TOKEN = $('meta[name="csrf-token"]').attr('content');
-  $.ajaxSetup({
-      beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-      }
-    }); 
+    <!-- Link stuff with dumb content
 
-  $.ajax({
-      type: "POST", 
-      url: "/notes?&authenticity_token="+encodeURIComponent(AUTH_TOKEN), 
-      data:{ utf:"✓", description : $('#description').val() , domain : $('#domain').val(), user_id : $('#user_id').val(),commit: "submit" },
-      dataType: "HTML",
-      success:function(data) {
-            console.log(data);
-            // window.location = data.redirect_url;
-        },
-        error: function(xhr, status) {
-            console.log(status);
-        }
-      });
+    <div id="linkCC">
 
-  return false;
-  }); 
-});
-</script>
+      <div class="linkContainer">
+        <span class="link">1. This is a link to a story. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">2. Another link to another story on this site. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">3. This is just another story that I found. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">4. This is a link to a story. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">5. This is a link to a story. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">6. Another link to another story on this site. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">7. This is just another story that I found. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+      <div class="linkContainer">
+        <span class="link">8. This is a link to a story. </span>
+        <span class="linkMeta">&nbsp;&nbsp;<i class="fa fa-comment"></i>&nbsp;44</span> 
+      </div>
+
+    </div>
+
+    -->
+
+
